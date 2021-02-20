@@ -7,7 +7,7 @@ class UserService {
     const { data } = await fetch(`${this.getGithubAPI}/users`, {
       method: 'GET',
       params: {
-        per_page: perPage,
+        per_page: 100,
         since,
       },
     });

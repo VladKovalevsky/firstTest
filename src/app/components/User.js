@@ -1,12 +1,7 @@
 import { loadingStates } from '../constants';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useParams } from 'react-router-dom';
-import {
-  Breadcrumb,
-  Card, Container, Divider, Grid, Icon, Image, Segment,
-} from 'semantic-ui-react';
-import UserPlaceholder from './UserPlaceholder';
+import { useParams } from 'react-router-dom';
 import {
   getUser, removeUser, selectCurrentUser, selectUserStatus,
 } from '../slices/user';
@@ -38,70 +33,56 @@ const User = () => {
     bio,
   } = user;
 
-  const isUserLoading = status === loadingStates.IDLE || status === loadingStates.LOADING;
+  const isUserLoading = status === loadingStates.PENDING || status === loadingStates.LOADING;
 
   if (isUserLoading) {
-    return <UserPlaceholder />;
+    return <div>Loading...</div>;
   }
 
   return (
-    <Container>
-      <Segment>
-        <Breadcrumb>
-          <Breadcrumb.Section link as={NavLink} to="/">Home</Breadcrumb.Section>
-          <Breadcrumb.Divider icon="right chevron" />
-          <Breadcrumb.Section active>{username}</Breadcrumb.Section>
-        </Breadcrumb>
-      </Segment>
-
-      <Grid>
-        <Grid.Column tablet="6" mobile="16" computer="6">
-          <Image centered src={avatarUrl} />
-        </Grid.Column>
-        <Grid.Column mobile="16" tablet="10" computer="10">
-          <Card fluid>
-            <Card.Content>
-              <Card.Header>{name}</Card.Header>
-              <Card.Meta>
-                Created at:
-                {' '}
-                {formatDate(createAt)}
-                {email}
-              </Card.Meta>
-              <Card.Meta />
-              <Card.Description>
-                {bio}
-                <p>
-                  {company}
-                </p>
-                <Divider />
-                <Grid columns="2">
-                  <Grid.Row>
-                    <Grid.Column>
-                      Followers:
-                      {' '}
-                      <strong>{followers}</strong>
-                    </Grid.Column>
-                    <Grid.Column>
-                      Following:
-                      {' '}
-                      <strong>{following}</strong>
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-                <Divider />
-                {blog && <a href={blog} target="_blank" rel="noreferrer">{blog}</a>}
-              </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <Icon name="map marker alternate" />
+    <div>
+      <div>
+        <img src={avatarUrl} alt='avatar' />
+      </div>
+      <div>
+        <div>
+          <div>
+            <h3>{name}</h3>
+            <div>
+              Created at:
               {' '}
-              {location}
-            </Card.Content>
-          </Card>
-        </Grid.Column>
-      </Grid>
-    </Container>
+              {formatDate(createAt)}
+              {email}
+            </div>
+            <div>
+              {bio}
+              <p>
+                {company}
+              </p>
+              <div>
+                <div>
+                  <div>
+                    Followers:
+                    {' '}
+                    <strong>{followers}</strong>
+                  </div>
+                  <div>
+                    Following:
+                    {' '}
+                    <strong>{following}</strong>
+                  </div>
+                </div>
+              </div>
+              {blog && <a href={blog} target="_blank" rel="noreferrer">{blog}</a>}
+            </div>
+          </div>
+          <div>
+            {' '}
+            {location}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

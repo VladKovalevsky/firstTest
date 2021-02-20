@@ -4,7 +4,7 @@ import { loadingStates } from '../constants';
 
 const initialState = {
   data: {},
-  status: loadingStates.IDLE,
+  status: loadingStates.PENDING,
   error: null,
 };
 

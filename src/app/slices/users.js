@@ -10,7 +10,7 @@ const usersAdapter = createEntityAdapter({
 
 const initialState = usersAdapter.getInitialState({
   hasMore: true,
-  status: loadingStates.IDLE,
+  status: loadingStates.PENDING,
   error: null,
 });
 

@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, List, Loader } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useHistory } from 'react-router-dom';
 import { loadingStates } from '../constants';
-import UserItem from './UserItem';
 import { getUsers, selectUsersIds, selectUsersStatus } from '../slices/users';
 
 const ItemLoader = () => (
-  <List.Item>
-    <Loader active inline="centered" size="medium" key="loader">Loading...</Loader>
-  </List.Item>
+  <div>
+    <span>Loading...</span>
+  </div>
 );
 
 const Users = () => {
@@ -17,35 +16,44 @@ const Users = () => {
   const status = useSelector(selectUsersStatus);
 
   useEffect(() => {
-    if (status === loadingStates.IDLE) {
-      dispatch(getUsers());
-    }
-  }, [status, dispatch]);
+    dispatch(getUsers());
+  }, [dispatch]);
 
   const users = useSelector(selectUsersIds);
 
   const loadMore = (page) => {
-    if (status !== loadingStates.IDLE) {
+    if (status !== loadingStates.PENDING) {
       dispatch(getUsers({ page, since: users[users.length - 1] }));
     }
   };
 
+  const history = useHistory();
+  const handleClick = useMemo(() => users.map(user => {
+    return history.push(user.login);
+  }), [users, history]);
+
+  const renderedUsersList = useMemo(() => users.map((user, id) => (
+    <ul>
+      <li key={id} onClick={handleClick}>
+        <img scr={user.avatar_url} alt='avatar' />
+        <h3>{user.login}</h3>
+        <span>{user.login}</span>
+      </li>
+    </ul>
+  )), [users, handleClick])
+
   return (
-    <Container>
+    <div>
       <InfiniteScroll
         pageStart={1}
         hasMore
         loader={<ItemLoader key="loader" />}
         loadMore={loadMore}
       >
-        <List divided relaxed>
-          {users.map((id) => (
-            <UserItem key={id} id={id} />
-          ))}
-        </List>
+        {renderedUsersList}
       </InfiniteScroll>
 
-    </Container>
+    </div>
   );
 };
 

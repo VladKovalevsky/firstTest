@@ -1,5 +1,5 @@
 export const loadingStates = {
-  IDLE: 'IDLE',
+  PENDING: 'PENDING',
   LOADING: 'LOADING',
   SUCCEESS: 'SUCCEESS',
   FAILED: 'FAILED',
